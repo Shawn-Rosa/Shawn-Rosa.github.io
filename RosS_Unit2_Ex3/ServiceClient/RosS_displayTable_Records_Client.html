@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RESTful JSON-PHP RosS_displayTable_Records_API Web Service Client</title>
+ </head>
+<body>
+<h3>
+Please Click to view response from Web Service
+
+<p>
+<!-- id of tableName is variable that JS AJAJ code will READ from in HTML page --> 
+		<form id="target">
+			Table Name: <input type="text" id="tableName" name ="tableName">&nbsp
+			<input type="submit" value="Submit">
+		</form>
+	</p>
+	<br />
+
+-----------------------------------------------------------------------------	
+	<br />
+<!-- id of aMessage is variable that JS AJAJ code will WRITE to in HTML page --> 
+	<p>
+		Message Contents: <br />
+		<span id="aMessage"></span>
+     </p>
+	 
+</h3>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+$('#target').submit(function(event) {
+
+	event.preventDefault();
+	
+	var aTableName = $('#tableName').val();
+				
+	$.ajax({
+		type: 'GET',
+		url: 'http://localhost:8000/CIS266/RESTful/RosS_Unit2_Ex3/ServiceProvider/RosS_displayTable_Records_API.php',
+		data: 'tableName=' + aTableName,
+		dataType: 'json',
+		encode: true
+	})
+	.done(function(data) {
+	    var length = data.length;
+	    var records = "Number of elements (records) in JSON Array Returned = " + length + "<br />";
+		for (i = 0; i < length; i++) { records += data[i] + "<br>"; }
+	
+	    $('#aMessage').html(records);
+
+	})
+	.fail(function() {
+		$('#aMessage').text('An error occurred. Please try again.');
+	});
+
+	});
+
+</script>
+</body>
+</html>
