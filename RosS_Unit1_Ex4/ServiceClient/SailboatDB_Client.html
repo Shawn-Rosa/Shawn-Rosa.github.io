@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RESTful JSON-PHP Web Service Client</title>
+ </head>
+<body>
+<h2>
+Please enter Sailboat name to search for in Database Emulator
+</h2>
+<p>
+		<form id="target" action="" method="post">
+			Sailboat: <input type="text" id="sailboat" name ="sailboat">&nbsp
+			<input type="submit" value="Submit">
+		</form>
+	</p>
+	<br />
+
+-----------------------------------------------------------------------------	
+	<br /><br />
+
+Sailboat information returned from Database Emulator web service:
+	<p>
+		Sailboat Information: <span id="aSailboat"></span>
+		<br />
+		Sailboat Name: <span id="aBoatName"></span>
+		<br />
+		Sailboat Owner: <span id="aOwnerName"></span>
+		<br />
+		Sailboat Number of Sails: <span id="aNumberOfSails"></span>
+		<br />
+		Sailboat Price: <span id="aPrice"></span>
+	</p>
+	 
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+$('#target').submit(function(event) {
+
+//alert("inside JS function");
+
+	event.preventDefault();
+	
+	var aSailboat = $('#sailboat').val();
+					
+	$.ajax({
+		type: 'POST',
+		url: '../ServiceProvider/SailboatAPI.php',
+		data: 'sailboat=' + aSailboat, 
+		dataType: 'json',
+		encode: true
+	})
+	.done(function(data) {
+		$('#aSailboat').text(data.sailboatString);
+		$('#aBoatName').text(data.sailboatName);
+		$('#aOwnerName').text(data.sailboatOwnerName);
+		$('#aNumberOfSails').text(data.sailboatNumberOfSails);
+		$('#aPrice').text(data.sailboatPrice);
+	})
+	.fail(function() {
+		$('#result').text('An error occurred. Please contact your Web Service Administrator.');
+	});
+
+	});
+
+</script>
+</body>
+</html>
